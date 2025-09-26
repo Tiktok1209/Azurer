@@ -1,0 +1,701 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubuntu Flame Grill - Online Ordering</title>
+    <style>
+        /* General Body and Container */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        /* Header */
+        header {
+            background: #2c3e50; /* Dark blue/grey */
+            color: #fff;
+            padding-top: 20px;
+            min-height: 70px;
+            border-bottom: #e8491d 3px solid;
+        }
+
+        header h1 {
+            float: left;
+            margin: 0;
+            padding: 0;
+        }
+
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+
+        header ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        header li {
+            display: inline;
+            padding: 0 15px;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        header a:hover {
+            color: #e8491d; /* Orange accent */
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #34495e; /* Slightly lighter dark blue */
+            color: #fff;
+            text-align: center;
+            padding: 100px 0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .hero h2 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-block;
+            color: #fff;
+            background: #e8491d;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #c0392b; /* Darker orange */
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            color: #333;
+            background: #ccc;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #bbb;
+        }
+
+        .btn-primary:disabled, .btn-secondary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Sections */
+        section {
+            background: #fff;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        /* Menu Section */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .menu-item h3 {
+            color: #e8491d;
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        .menu-item p {
+            font-size: 0.9em;
+            color: #666;
+            min-height: 40px; /* Ensure consistent height */
+        }
+
+        .menu-item .price {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        /* Cart Section */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-info h4 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .cart-item-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-actions input[type="number"] {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 10px;
+        }
+
+        .cart-item-actions .remove-btn {
+            background: #e74c3c; /* Red for remove */
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+
+        .cart-item-actions .remove-btn:hover {
+            background: #c0392b;
+        }
+
+        .cart-summary {
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .cart-summary p {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        #empty-cart-message {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        /* Order Tracking Section */
+        .order-tracker {
+            text-align: center;
+        }
+
+        .order-tracker input[type="text"] {
+            padding: 10px;
+            width: 60%;
+            max-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 1em;
+        }
+
+        .order-status {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f8ff; /* Light blue background */
+            border: 1px solid #b0e0e6;
+            border-radius: 8px;
+            text-align: left;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .order-status p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .order-status .status-label {
+            font-weight: bold;
+            color: #e8491d;
+        }
+
+        /* Auth Section */
+        .auth-section {
+            background: #fff;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .auth-forms {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .auth-forms form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .auth-forms input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            border-top: #e8491d 3px solid;
+        }
+
+        footer p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Ubuntu Flame Grill</h1>
+            <nav>
+                <ul>
+                    <li><a href="#menu-section">Menu</a></li>
+                    <li><a href="#cart-section">Cart</a></li>
+                    <li><a href="#track-order-section">Track Order</a></li>
+                    <li><a href="#">Login / Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="hero-section" class="hero">
+            <h2>Experience the Taste of Home</h2>
+            <p>Freshly prepared traditional and flame-grilled meals, delivered with convenience.</p>
+            <button class="btn-primary" onclick="window.location.href='#menu-section'">Order Now</button>
+        </section>
+
+        <section id="menu-section" class="menu-section">
+            <h2>Our Delicious Menu</h2>
+            <div id="menu-items" class="menu-grid">
+                <!-- Menu items will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <section id="cart-section" class="cart-section">
+            <h2>Your Cart</h2>
+            <div id="cart-items">
+                <!-- Cart items will be loaded here by JavaScript -->
+                <p id="empty-cart-message">Your cart is empty.</p>
+            </div>
+            <div class="cart-summary">
+                <p>Total: <span id="cart-total">R0.00</span></p>
+                <button class="btn-primary" id="checkout-btn" disabled>Proceed to Checkout</button>
+                <button class="btn-secondary" id="clear-cart-btn">Clear Cart</button>
+            </div>
+        </section>
+
+        <section id="track-order-section" class="track-order-section">
+            <h2>Track Your Order</h2>
+            <div class="order-tracker">
+                <input type="text" id="order-id-input" placeholder="Enter your Order ID">
+                <button class="btn-primary" id="track-order-btn">Track Order</button>
+                <div id="order-status-display" class="order-status">
+                    <!-- Order status will be displayed here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <section id="auth-section" class="auth-section">
+            <h2>Login / Register</h2>
+            <div id="profile-area" style="display:none;">
+                <h3>Welcome, <span id="profile-username"></span>!</h3>
+                <button id="logout-btn" class="btn-secondary">Logout</button>
+                <div id="profile-details"></div>
+            </div>
+            <div class="auth-forms" id="auth-forms">
+                <form id="login-form">
+                    <h3>Login</h3>
+                    <input type="text" id="login-username" placeholder="Username" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button type="submit" class="btn-primary">Login</button>
+                    <p id="login-message" style="color: red;"></p>
+                </form>
+                <form id="register-form">
+                    <h3>Register</h3>
+                    <input type="text" id="register-username" placeholder="Username" required>
+                    <input type="password" id="register-password" placeholder="Password" required>
+                    <button type="submit" class="btn-secondary">Register</button>
+                    <p id="register-message" style="color: green;"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ubuntu Flame Grill. All rights reserved.</p>
+            <p>Contact: (+27) 83 881 9882 | info@khunofeeevents.co.za</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuItemsContainer = document.getElementById('menu-items');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalSpan = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            const clearCartBtn = document.getElementById('clear-cart-btn');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const orderIdInput = document.getElementById('order-id-input');
+            const trackOrderBtn = document.getElementById('track-order-btn');
+            const orderStatusDisplay = document.getElementById('order-status-display');
+
+            // Mock Menu Data (would come from backend API in a real app)
+            const menu = [
+                { id: 1, name: 'Flame-Grilled Chicken', description: 'Succulent chicken marinated and flame-grilled to perfection.', price: 120.00 },
+                { id: 2, name: 'Traditional Beef Stew', description: 'Hearty beef stew with vegetables, slow-cooked for rich flavor.', price: 150.00 },
+                { id: 3, name: 'Vegetable Curry', description: 'Aromatic and spicy vegetable curry, served with rice.', price: 100.00 },
+                { id: 4, name: 'Lamb Chops', description: 'Tender lamb chops, seasoned and grilled.', price: 180.00 },
+                { id: 5, name: 'Pap & Wors', description: 'Traditional maize meal with grilled boerewors sausage.', price: 90.00 },
+                { id: 6, name: 'Side Salad', description: 'Fresh garden salad with a tangy vinaigrette.', price: 45.00 }
+            ];
+
+            // Cart storage (using localStorage for persistence across sessions)
+            let cart = JSON.parse(localStorage.getItem('ubuntuFlameGrillCart')) || [];
+
+            // --- Menu Functions ---
+            function renderMenu() {
+                menuItemsContainer.innerHTML = '';
+                menu.forEach(item => {
+                    const menuItemDiv = document.createElement('div');
+                    menuItemDiv.classList.add('menu-item');
+                    menuItemDiv.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <div class="price">R${item.price.toFixed(2)}</div>
+                        <button class="btn-primary add-to-cart-btn" data-id="${item.id}">Add to Cart</button>
+                    `;
+                    menuItemsContainer.appendChild(menuItemDiv);
+                });
+
+                // Add event listeners to "Add to Cart" buttons
+                document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const itemId = parseInt(event.target.dataset.id);
+                        addToCart(itemId);
+                    });
+                });
+            }
+
+            // --- Cart Functions ---
+            function addToCart(itemId) {
+                const existingItemIndex = cart.findIndex(item => item.id === itemId);
+                if (existingItemIndex > -1) {
+                    cart[existingItemIndex].quantity++;
+                } else {
+                    const itemToAdd = menu.find(item => item.id === itemId);
+                    if (itemToAdd) {
+                        cart.push({ ...itemToAdd, quantity: 1 });
+                    }
+                }
+                saveCart();
+                renderCart();
+            }
+
+            function updateCartItemQuantity(itemId, newQuantity) {
+                const itemIndex = cart.findIndex(item => item.id === itemId);
+                if (itemIndex > -1) {
+                    if (newQuantity > 0) {
+                        cart[itemIndex].quantity = newQuantity;
+                    } else {
+                        cart.splice(itemIndex, 1); // Remove if quantity is 0 or less
+                    }
+                }
+                saveCart();
+                renderCart();
+            }
+
+            function removeFromCart(itemId) {
+                cart = cart.filter(item => item.id !== itemId);
+                saveCart();
+                renderCart();
+            }
+
+            function clearCart() {
+                cart = [];
+                saveCart();
+                renderCart();
+            }
+
+            function calculateCartTotal() {
+                return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+
+            function saveCart() {
+                localStorage.setItem('ubuntuFlameGrillCart', JSON.stringify(cart));
+            }
+
+            function renderCart() {
+                cartItemsContainer.innerHTML = '';
+                if (cart.length === 0) {
+                    emptyCartMessage.style.display = 'block';
+                    checkoutBtn.disabled = true;
+                    clearCartBtn.disabled = true;
+                } else {
+                    emptyCartMessage.style.display = 'none';
+                    checkoutBtn.disabled = false;
+                    clearCartBtn.disabled = false;
+                    cart.forEach(item => {
+                        const cartItemDiv = document.createElement('div');
+                        cartItemDiv.classList.add('cart-item');
+                        cartItemDiv.innerHTML = `
+                            <div class="cart-item-info">
+                                <h4>${item.name}</h4>
+                                <p>R${item.price.toFixed(2)} each</p>
+                            </div>
+                            <div class="cart-item-actions">
+                                <input type="number" min="1" value="${item.quantity}" data-id="${item.id}" class="cart-quantity-input">
+                                <button class="remove-btn" data-id="${item.id}">Remove</button>
+                            </div>
+                        `;
+                        cartItemsContainer.appendChild(cartItemDiv);
+                    });
+                }
+
+                cartTotalSpan.textContent = `R${calculateCartTotal().toFixed(2)}`;
+
+                // Add event listeners for quantity changes and remove buttons
+                document.querySelectorAll('.cart-quantity-input').forEach(input => {
+                    input.addEventListener('change', (event) => {
+                        const itemId = parseInt(event.target.dataset.id);
+                        const newQuantity = parseInt(event.target.value);
+                        updateCartItemQuantity(itemId, newQuantity);
+                    });
+                });
+
+                document.querySelectorAll('.remove-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const itemId = parseInt(event.target.dataset.id);
+                        removeFromCart(itemId);
+                    });
+                });
+            }
+
+            // Event listeners for cart actions
+            checkoutBtn.addEventListener('click', () => {
+                if (cart.length > 0) {
+                    alert('Proceeding to checkout! (This is a mock checkout)');
+                    // In a real app, this would navigate to a checkout page or send data to backend
+                    // For now, let's clear the cart after "checkout"
+                    clearCart();
+                } else {
+                    alert('Your cart is empty!');
+                }
+            });
+
+            clearCartBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to clear your cart?')) {
+                    clearCart();
+                }
+            });
+
+            // --- Order Tracking Functions ---
+            // Mock Order Statuses (would come from backend API in a real app)
+            const mockOrderStatuses = {
+                'UFG123': { status: 'Preparing', estimatedTime: '15-20 mins' },
+                'UFG456': { status: 'Dispatched', estimatedTime: '5-10 mins', driver: 'John Doe' },
+                'UFG789': { status: 'Completed', completionTime: '2024-05-10 14:30' },
+                'UFG000': { status: 'Pending Confirmation', estimatedTime: '5 mins' }
+            };
+
+            // --- Auth Functions ---
+            // Backend API endpoints (replace with your real URLs)
+            const API_BASE = 'https://your-backend-url.com/api';
+            function showProfile(username) {
+                document.getElementById('profile-area').style.display = 'block';
+                document.getElementById('auth-forms').style.display = 'none';
+                document.getElementById('profile-username').textContent = username;
+                // Fetch profile details from backend
+                fetch(`${API_BASE}/profile?username=${encodeURIComponent(username)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById('profile-details').innerHTML = `<p>Email: ${data.email || 'N/A'}</p>`;
+                    })
+                    .catch(() => {
+                        document.getElementById('profile-details').innerHTML = '<p>Could not load profile details.</p>';
+                    });
+            }
+            function showAuthForms() {
+                document.getElementById('profile-area').style.display = 'none';
+                document.getElementById('auth-forms').style.display = 'flex';
+            }
+            // Check login state on load
+            const loggedInUser = localStorage.getItem('ubuntuFlameGrillLoggedInUser');
+            if (loggedInUser) {
+                showProfile(loggedInUser);
+            } else {
+                showAuthForms();
+            }
+            // Login
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('login-username').value.trim();
+                const password = document.getElementById('login-password').value;
+                const msg = document.getElementById('login-message');
+                fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        msg.style.color = 'green';
+                        msg.textContent = 'Login successful!';
+                        localStorage.setItem('ubuntuFlameGrillLoggedInUser', username);
+                        showProfile(username);
+                    } else {
+                        msg.style.color = 'red';
+                        msg.textContent = data.message || 'Invalid username or password.';
+                    }
+                })
+                .catch(() => {
+                    msg.style.color = 'red';
+                    msg.textContent = 'Login failed. Please try again.';
+                });
+            });
+            // Register
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('register-username').value.trim();
+                const password = document.getElementById('register-password').value;
+                const msg = document.getElementById('register-message');
+                fetch(`${API_BASE}/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        msg.style.color = 'green';
+                        msg.textContent = 'Registration successful! You can now log in.';
+                    } else {
+                        msg.style.color = 'red';
+                        msg.textContent = data.message || 'Registration failed.';
+                    }
+                })
+                .catch(() => {
+                    msg.style.color = 'red';
+                    msg.textContent = 'Registration failed. Please try again.';
+                });
+            });
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                fetch(`${API_BASE}/logout`, { method: 'POST' })
+                    .finally(() => {
+                        localStorage.removeItem('ubuntuFlameGrillLoggedInUser');
+                        showAuthForms();
+                    });
+            });
+
+            // Initial render calls
+            renderMenu();
+            renderCart();
+        });
+    </script>
+</body>
+</html>
